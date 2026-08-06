@@ -1,0 +1,95 @@
+@import url("var.css");
+
+
+html {
+    box-sizing: border-box;
+}
+
+body {
+    min-width: 320px;
+    font-family: --primary-font-family, sans-serif;
+    font-weight: 400;
+    background-color: --white;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: inherit;
+    margin: 0;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+img {
+    max-width: 100%;
+}
+
+ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+p,
+h1,
+h2,
+h3,
+figure,
+figcaption {
+    padding: 0;
+    margin: 0;
+}
+
+input {
+    padding: 0;
+    outline: none;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+}
+
+button {
+    padding: 0;
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+}
+
+.wrapper {
+    width: 100vw;
+}
+
+.container {
+    width: 100%;
+    padding: 0 16px;
+    margin: 0 auto;
+
+    @media (min-width: --breakpoint-s) {
+        max-width: 440px;
+        padding: 0 20px;
+    }
+
+    @media (min-width: --breakpoint-m) {
+        max-width: 720px;
+        padding: 0 24px;
+    }
+
+    @media (min-width: --breakpoint-l) {
+        max-width: 960px;
+        padding: 0 32px;
+    }
+
+    @media (min-width: --breakpoint-xl) {
+        max-width: 1216px;
+        padding: 0 32px;
+    }
+
+    @media (min-width: --breakpoint-xxl) {
+        max-width: 1344px;
+        padding: 0 48px;
+    }
+}
