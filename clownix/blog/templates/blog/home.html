@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}{{ page_title }} — Clownix{% endblock %}
+{% block content %}
+{% load static %}
+  <section class="page-head">
+    <div class="page-head__wrapper">
+    <h1 class="page-head__title">
+      <a class="page-head__logo" href="{% url 'blog:home' %}">
+        <img class="page-head__img" src="{% static 'img/logo.svg' %}" alt="Логотип">
+      </a>
+    </h1>
+    <p class="page-head__description">
+       — ваш быстрый справочник Linux-команд. 
+      Никакой воды, только точные синтаксис, 
+      ключи и примеры использования терминала на одной странице.
+    </p>
+    </div>
+    {% include "blog/_includes/_sort.html" %}
+  </section>
+  {% include "blog/_includes/_grid.html" %}
+{% endblock %}

@@ -1,0 +1,9 @@
+{% if posts %}
+  <div class="cards-grid">
+    {% for post in posts %}
+      {% include "blog/_includes/_card.html" with post=post %}
+    {% endfor %}
+  </div>
+{% else %}
+  <p class="empty">Пока нет записей.</p>
+{% endif %}

@@ -1,0 +1,12 @@
+{% if commands %}
+  <ol class="cmd-list">
+    {% for cmd in commands %}
+      <li class="cmd-list__item">
+        <pre class="cmd">{{ cmd.code }}</pre>
+        {% if cmd.description %}
+          <p class="cmd-list__desc">{{ cmd.description|linebreaksbr }}</p>
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ol>
+{% endif %}

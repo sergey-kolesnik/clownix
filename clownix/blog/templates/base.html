@@ -3,33 +3,53 @@
 <html lang="ru">
   <head>
     <meta charset="utf-8" />
-    <title>{% block title %}Clownix{% endblock %}</title>
-
+    <title>{% block title %}{{ page_title|default:"Clownix" }} — Clownix Linux Reference{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'css/normalize.css' %}" />
     <link rel="stylesheet" href="{% static 'css/main.css' %}" />
     <link rel="stylesheet" href="{% static 'css/style.css' %}" />
   </head>
   <body>
-    <nav class="sidebar-nav">
-        <h2 class="sibebar-nav__title">
-            Разделы
-        </h2>
-        <ul class="sidebar-nav__list">
-            <li class="sidebar-nav__item">
-                Общие
+    <div class="layout">
+      <aside class="sidebar">
+        <a class="sidebar__logo" href="{% url 'blog:home' %}">
+          <h1 class="sidebar__title">
+            Clownix
+          </h1>
+        </a>
+        <nav class="sidebar-nav" aria-label="Темы">
+          <h2 class="sidebar-nav__title">Темы</h2>
+          <ul class="sidebar-nav__list">
+            <li class="sidebar-nav__item {% if not request.resolver_match.kwargs.slug %}sidebar-nav__item--active{% endif %}">
+              <a href="{% url 'blog:home' %}">Все записи</a>
             </li>
-            <li class="sidebar-nav__item">
-                Сети
+            {% for cat in sidebar_categories %}
+            <li class="sidebar-nav__item {% if request.resolver_match.kwargs.slug == cat.slug %}sidebar-nav__item--active{% endif %}">
+              <a href="{{ cat.get_absolute_url }}">{{ cat.name }}</a>
             </li>
-            <li class="sidebar-nav__item">
-                Память
-            </li>
-        </ul>
-    </nav>
+            {% endfor %}
+          </ul>
+        </nav>
+      </aside>
 
-    <main class="main container">
-        
-    </main>
-    {% block content %}{% endblock %}
+      <main class="main container">
+        <header class="topbar">
+          <form class="search" action="{% url 'blog:search' %}" method="get" role="search">
+            <input
+              class="search__input"
+              type="search"
+              name="q"
+              value="{{ request.GET.q|default:'' }}"
+              placeholder="Поиск по командам или заголовку…"
+              aria-label="Поиск"
+            />
+            <button class="search__btn" type="submit">Найти</button>
+          </form>
+        </header>
+
+        <div class="content">
+          {% block content %}{% endblock %}
+        </div>
+      </main>
+    </div>
   </body>
 </html>
