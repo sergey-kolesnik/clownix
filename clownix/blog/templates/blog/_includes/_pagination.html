@@ -1,0 +1,29 @@
+{% if page_obj.paginator.num_pages > 1 %}
+  <nav class="pagination" aria-label="Постраничная навигация">
+    {% if page_obj.has_previous %}
+      <a class="pagination__btn"
+         href="?{% if querystring %}{{ querystring }}&{% endif %}page={{ page_obj.previous_page_number }}">← Назад</a>
+    {% else %}
+      <span class="pagination__btn pagination__btn--disabled">← Назад</span>
+    {% endif %}
+
+    <ul class="pagination__list">
+      {% for n in page_obj.paginator.page_range %}
+        {% if n == page_obj.number %}
+          <li class="pagination__item pagination__item--active"><span>{{ n }}</span></li>
+        {% elif n == 1 or n == page_obj.paginator.num_pages or n|add:-2 <= page_obj.number and n|add:2 >= page_obj.number %}
+          <li class="pagination__item"><a href="?{% if querystring %}{{ querystring }}&{% endif %}page={{ n }}">{{ n }}</a></li>
+        {% elif n == 2 or n == page_obj.paginator.num_pages|add:-1 %}
+          <li class="pagination__ellipsis"><span>…</span></li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+
+    {% if page_obj.has_next %}
+      <a class="pagination__btn"
+         href="?{% if querystring %}{{ querystring }}&{% endif %}page={{ page_obj.next_page_number }}">Вперёд →</a>
+    {% else %}
+      <span class="pagination__btn pagination__btn--disabled">Вперёд →</span>
+    {% endif %}
+  </nav>
+{% endif %}
