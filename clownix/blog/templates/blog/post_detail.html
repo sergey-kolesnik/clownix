@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% load blog_extras %}
+{% block title %}{{ post.title }} — Clownix{% endblock %}
+{% block content %}
+  <article class="article">
+    <a class="article__back" href="{{ post.category.get_absolute_url }}">← {{ post.category.name }}</a>
+
+    <header class="article__head">
+      <span class="article__topic">{{ post.category.name }}</span>
+      <h1 class="article__title">{{ post.title }}</h1>
+      <time class="article__date" datetime="{{ post.created_at|date:'c' }}">
+        {{ post.created_at|date:"d E Y" }}
+      </time>
+    </header>
+
+    {% if post.cover %}
+      <figure class="article__cover">
+        <img src="{{ post.cover.url }}" alt="{{ post.title }}" />
+      </figure>
+    {% endif %}
+
+    <p class="article__lead">{{ post.description }}</p>
+
+    {% if post.commands_list.all or post.commands %}
+      <section class="article__commands">
+        <h2 class="article__h2">Команды</h2>
+
+        {% if post.commands_list.all %}
+          {% include "blog/_includes/_commands.html" with commands=post.commands_list.all %}
+        {% endif %}
+
+        {% if post.commands %}
+          {% if post.commands_list.all %}
+            <h3 class="article__h3">Дополнительные блоки</h3>
+          {% endif %}
+          {{ post.commands|command_blocks }}
+        {% endif %}
+      </section>
+    {% endif %}
+
+    {% if post.body %}
+      <section class="article__body">
+        {{ post.body|inline_images }}
+      </section>
+    {% endif %}
+  </article>
+
+  {% if related %}
+    <section class="related">
+      <h2 class="related__title">Похожие записи</h2>
+      {% include "blog/_includes/_grid.html" with posts=related %}
+    </section>
+  {% endif %}
+{% endblock %}

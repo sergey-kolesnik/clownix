@@ -1,0 +1,23 @@
+:root {
+    /* size */
+    --breakpoint-xs: 0px;
+    --breakpoint-s: 320px;
+    --breakpoint-m: 768px;
+    --breakpoint-l: 992px;
+    --breakpoint-xl: 1200px;
+    --breakpoint-xxl: 1400px;
+    /* fonts */
+    --primary-font-family: 'Geist';
+    --secondary-font-family: 'Bayon';
+    /* color */
+    --gradient-end: #8cc4cc;
+    --gradient-end-button: #2c9c8c;
+    --gradient-center: #56ada8;
+    --green: #096b6a;
+    --grey-color: #737373;
+    --grey-color2: #171717;
+    --grey-color-header: #7a807e;
+    --black-color: #150f0b;
+    --black-title: #0a0a0a;
+    --white: #ffffff;
+}

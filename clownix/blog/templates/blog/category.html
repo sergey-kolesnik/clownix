@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}{{ category.name }} — Clownix{% endblock %}
+{% block content %}
+  <section class="page-head">
+    <h1 class="page-head__title">{{ category.name }}</h1>
+    {% if category.description %}
+      <p class="page-head__desc">{{ category.description }}</p>
+    {% endif %}
+    {% include "blog/_includes/_sort.html" %}
+  </section>
+  {% include "blog/_includes/_grid.html" %}
+{% endblock %}

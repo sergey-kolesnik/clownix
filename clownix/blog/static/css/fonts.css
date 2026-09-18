@@ -1,0 +1,31 @@
+@font-face {
+  font-family: 'Bayon';
+  font-style: normal;
+  font-weight: 400;
+  src: url('/fonts/Bayon-Regular.woff2') format('woff2');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Geist';
+  font-style: normal;
+  font-weight: 400;
+  src: url('/fonts/Geist-Regular.woff2') format('woff2');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Geist';
+  font-style: normal;
+  font-weight: 500;
+  src: url('/fonts/Geist-Medium.woff2') format('woff2');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Geist';
+  font-style: normal;
+  font-weight: 600;
+  src: url('/fonts/Geist-SemiBold.woff2') format('woff2');
+  font-display: swap;
+}

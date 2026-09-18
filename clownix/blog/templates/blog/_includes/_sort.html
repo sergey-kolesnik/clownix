@@ -1,0 +1,7 @@
+<form class="sort" method="get" action="">
+  <label class="sort__label" for="sort">Сортировка:</label>
+  <select class="sort__select" id="sort" name="sort" onchange="this.form.submit()">
+    <option value="new" {% if current_sort == 'new' %}selected{% endif %}>Сначала новые</option>
+    <option value="old" {% if current_sort == 'old' %}selected{% endif %}>Сначала старые</option>
+  </select>
+</form>

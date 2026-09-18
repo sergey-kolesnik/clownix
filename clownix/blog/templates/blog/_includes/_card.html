@@ -1,0 +1,29 @@
+{% load static %}
+
+<article class="card">
+  <a class="card__link" href="{{ post.get_absolute_url }}">
+    <div class="card__media">
+      {% if post.cover %}
+        <img src="{{ post.cover.url }}" alt="{{ post.title }}" loading="lazy" />
+      {% else %}
+        <div class="card__placeholder">no image</div>
+      {% endif %}
+    </div>
+    <div class="card__body">
+      <div class="card__date-block">
+        <img src="{% static 'img/date.svg' %}" alt="Календарь" class="card__date-img">
+        <time class="card__date" datetime="{{ post.created_at|date:'c' }}">
+          {{ post.created_at|date:"d E Y" }}
+        </time>
+      <span class="card__category">{{ post.category.name }}</span>
+      </div>
+
+      <h3 class="card__title">{{ post.title }}</h3>
+      <p class="card__desc">{{ post.description|truncatechars:120 }}</p>
+      
+      <div class="card__arror">
+        <img src="{% static 'img/arrow.svg' %}" alt="Стрелка" class="card__arrow-img">
+      </div>
+    </div>
+  </a>
+</article>

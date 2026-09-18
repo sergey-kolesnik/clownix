@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}{{ page_title }} — Clownix{% endblock %}
+{% block content %}
+  <section class="page-head">
+    <h1 class="page-head__title">Поиск</h1>
+    {% if query %}
+      <p class="page-head__desc">Результаты по запросу «{{ query }}»</p>
+    {% else %}
+      <p class="page-head__desc">Введите запрос в поле поиска сверху.</p>
+    {% endif %}
+  </section>
+  {% include "blog/_includes/_grid.html" %}
+{% endblock %}
