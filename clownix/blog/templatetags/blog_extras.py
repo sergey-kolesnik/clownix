@@ -2,6 +2,7 @@
 
 import re
 from django import template
+from django.utils.html import escape
 from django.utils.safestring import mark_safe
 
 from ..models import PostImage
@@ -30,18 +31,21 @@ def inline_images(value: str) -> str:
     if not value:
         return ""
 
+    ids = {int(m) for m in _IMG_RE.findall(value)}
+    images = {img.pk: img for img in PostImage.objects.filter(pk__in=ids)}
+
     def repl(match):
         """Подставить inline-картинку по её ID; вернуть пустую строку, если нет."""
-        try:
-            img = PostImage.objects.get(pk=int(match.group(1)))
-        except PostImage.DoesNotExist:
+        img = images.get(int(match.group(1)))
+        if img is None:
             return ""
         caption = (
-            f"<figcaption>{img.caption}</figcaption>" if img.caption else ""
+            f"<figcaption>{escape(img.caption)}</figcaption>" if img.caption else ""
         )
+        alt = escape(img.caption or "")
         return (
             f'<figure class="article-figure">'
-            f'<img src="{img.image.url}" alt="{img.caption}" />'
+            f'<img src="{img.image.url}" alt="{alt}" />'
             f"{caption}</figure>"
         )
 

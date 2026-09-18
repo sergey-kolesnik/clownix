@@ -32,6 +32,10 @@
     margin-bottom: 28px;
     color: var(--white);
 }
+
+.sidebar__title {
+    font-size: 40px;
+}
 .sidebar-nav__title {
     font-size: 12px;
     text-transform: uppercase;
