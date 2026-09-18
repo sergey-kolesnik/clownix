@@ -13,10 +13,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY . .
+COPY . /app/
 
 RUN mkdir -p /app/data /app/media /app/staticfiles
 
 EXPOSE 8000
 
-CMD ["sh", "-c", "python manage.py migrate --noinput && python manage.py collectstatic --noinput && gunicorn clownix.wsgi:application --bind 0.0.0.0:8000 --workers 3"]
+CMD ["sh", "-c", "cd /app/clownix && python manage.py migrate --noinput && python manage.py collectstatic --noinput && gunicorn --bind 0.0.0.0:8000 --workers 3 clownix.wsgi:application"]
