@@ -3,7 +3,19 @@
 <html lang="ru">
   <head>
     <meta charset="utf-8" />
+    <meta name="yandex-verification" content="999a81afcc3dc749" />
+    <meta name="google-site-verification" content="hOcb1mhMofJPCpm1VQiNfJ-lr-Mdd_wWY27p5S-68RY" />
+    <meta name="msvalidate.01" content="8732A9A8AFE02698C00895E796049687" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Clownix — Справочник по Linux: команды, настройка, решение проблем" />
+    <meta name="theme-color" content="#096b6a" />
+    <meta name="author" content="Sergey Kolesnik" />
+    <meta property="og:title" content="Clownix" />
+    <meta property="og:description" content="Clownix — Справочник по Linux: команды, настройка, решение проблем" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="/og-image.png" />
     <title>{% block title %}{{ page_title|default:"Clownix" }} — Clownix Linux Reference{% endblock %}</title>
+    <link rel="icon" type="image/svg+xml" href="{% static 'img/logo.svg' %}" />
     <link rel="stylesheet" href="{% static 'css/normalize.css' %}" />
     <link rel="stylesheet" href="{% static 'css/main.css' %}" />
     <link rel="stylesheet" href="{% static 'css/style.css' %}" />
@@ -49,6 +61,17 @@
         <div class="content">
           {% block content %}{% endblock %}
         </div>
+
+        <footer class="footer">
+          <div class="footer__inner">
+            <a class="footer__email" href="mailto:clownix.bash@mail.ru">
+              <span class="footer__email-icon" aria-hidden="true">✉</span>
+              clownix.bash@mail.ru
+            </a>
+            <span class="footer__brand">Clownix · Справочник по Linux</span>
+            <span class="footer__version">v{{ PROJECT_VERSION }}</span>
+          </div>
+        </footer>
       </main>
     </div>
   </body>

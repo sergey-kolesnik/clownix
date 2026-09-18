@@ -1,3 +1,4 @@
+from django.core.paginator import Paginator
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, render
 
@@ -8,6 +9,8 @@ SORT_OPTIONS = {
     "old": "created_at",
 }
 
+PAGE_SIZE = 6
+
 
 def _apply_sort(qs, request):
     """Применить сортировку к QuerySet по GET-параметру ?sort=new|old."""
@@ -16,12 +19,27 @@ def _apply_sort(qs, request):
     return qs.order_by(order), sort
 
 
+def _paginate(qs, request):
+    """Разбить QuerySet на страницы по PAGE_SIZE с сохранением query-параметров."""
+    paginator = Paginator(qs, PAGE_SIZE)
+    page_number = request.GET.get("page", 1)
+    page_obj = paginator.get_page(page_number)
+    querystring = request.GET.copy()
+    if "page" in querystring:
+        querystring.pop("page")
+    extra = querystring.urlencode()
+    return page_obj, extra
+
+
 def home(request):
     """Главная страница со всеми опубликованными статьями."""
     qs = Post.objects.filter(status="published").select_related("category")
     qs, current_sort = _apply_sort(qs, request)
+    page_obj, extra = _paginate(qs, request)
     return render(request, "blog/home.html", {
-        "posts": qs,
+        "posts": page_obj.object_list,
+        "page_obj": page_obj,
+        "querystring": extra,
         "current_sort": current_sort,
         "page_title": "Новые записи",
     })
@@ -34,8 +52,11 @@ def category_view(request, slug):
         status="published", category=category
     ).select_related("category")
     qs, current_sort = _apply_sort(qs, request)
+    page_obj, extra = _paginate(qs, request)
     return render(request, "blog/category.html", {
-        "posts": qs,
+        "posts": page_obj.object_list,
+        "page_obj": page_obj,
+        "querystring": extra,
         "category": category,
         "current_sort": current_sort,
         "page_title": category.name,
@@ -73,8 +94,11 @@ def search(request):
             | Q(description__icontains=q)
             | Q(commands__icontains=q)
         ).select_related("category").order_by("-created_at")
+    page_obj, extra = _paginate(posts, request)
     return render(request, "blog/search.html", {
-        "posts": posts,
+        "posts": page_obj.object_list,
+        "page_obj": page_obj,
+        "querystring": extra,
         "query": q,
         "page_title": f"Поиск: {q}" if q else "Поиск",
     })

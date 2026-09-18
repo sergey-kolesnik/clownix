@@ -8,8 +8,8 @@ class PostImageInline(admin.TabularInline):
     """Inline-форма для загрузки картинок, встраиваемых в тело статьи."""
     model = PostImage
     extra = 1
-    fields = ("image", "caption", "preview")
-    readonly_fields = ("preview",)
+    fields = ("image", "caption", "preview", "insert")
+    readonly_fields = ("preview", "insert")
 
     def preview(self, obj):
         """Превью загруженной картинки прямо в форме админки."""
@@ -19,6 +19,17 @@ class PostImageInline(admin.TabularInline):
                 obj.image.url,
             )
         return "—"
+
+    def insert(self, obj):
+        """Кнопка вставки плейсхолдера [[img:ID]] в поле body."""
+        if obj.pk:
+            return format_html(
+                '<button type="button" class="button insert-img-btn" '
+                'data-placeholder="[[img:{}]]">Вставить в текст</button>',
+                obj.pk,
+            )
+        return "Сначала сохраните"
+    insert.short_description = "Вставка"
 
 
 class CommandInline(admin.StackedInline):
@@ -92,6 +103,10 @@ class PostAdmin(admin.ModelAdmin):
             )
         return "—"
     cover_thumb.short_description = "Превью"
+
+    class Media:
+        """Подключить JS для кнопки «Вставить в текст» в PostImageInline."""
+        js = ("blog/admin_insert_image.js",)
 
 
 @admin.register(Command)
