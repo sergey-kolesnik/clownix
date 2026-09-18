@@ -10,9 +10,11 @@ load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+DATA_DIR = Path(os.getenv("DATA_DIR", str(BASE_DIR)))
+
 SECRET_KEY = os.getenv("SECRET_KEY")
-DEBUG = True
-ALLOWED_HOSTS = []
+DEBUG = os.getenv("DEBUG", "1") == "1"
+ALLOWED_HOSTS = [h.strip() for h in os.getenv("ALLOWED_HOSTS", "").split(",") if h.strip()]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -57,7 +59,7 @@ WSGI_APPLICATION = 'clownix.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': DATA_DIR / 'db.sqlite3',
     }
 }
 
@@ -74,9 +76,9 @@ USE_I18N = True
 USE_TZ = True
 
 STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATIC_ROOT = Path(os.getenv("STATIC_ROOT", str(BASE_DIR / 'staticfiles')))
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_ROOT = Path(os.getenv("MEDIA_ROOT", str(BASE_DIR / 'media')))
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
