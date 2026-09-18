@@ -44,6 +44,7 @@
     margin-bottom: 12px;
 }
 .sidebar-nav__item {
+    margin-bottom: 5px;
     border-radius: 10px;
     transition: background .15s ease;
 }
@@ -75,7 +76,9 @@
     border-radius: 10px;
     padding: 10px 14px;
     background: #f7f9f9;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
 }
+.search__input:hover { background: #eef2f2; border-color: #cdd6d6; }
 .search__input:focus { background: #fff; border-color: var(--gradient-center); }
 .search__btn {
     background: var(--green);
@@ -121,7 +124,9 @@
     border-radius: 10px;
     padding: 8px 12px;
     background: #fff;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
 }
+.sort__select:hover { background: #eef2f2; border-color: #cdd6d6; }
 
 /* ============== CARDS GRID ============== */
 .cards-grid {
@@ -206,6 +211,16 @@
     border: solid 1px var(--grey-color-header);
     padding: 10px;
     border-radius: 8px;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.card:hover .card__arror {
+    background-color: #000;
+    border-color: #000;
+}
+
+.card:hover .card__arrow-img {
+    filter: invert(1);
 }
 
 .empty, .empty-page {
