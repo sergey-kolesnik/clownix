@@ -173,7 +173,7 @@
     border: 1px solid var(--grey-color-header);
     background-color: rgb(23 23 23 / 0.1);
     border-radius: 9999px;
-    font-size: 14px;
+    font-size: 12px;
     text-transform: uppercase;
     letter-spacing: 1px;
     color: var(--black-title);

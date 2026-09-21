@@ -2,16 +2,16 @@ services:
   web:
     build:
       context: .
-      dockerfile: clownix/Dockerfile
-    image: clownix-web:latest
-    container_name: clownix
-    restart: unless-stopped
-    env_file:
-      - .env
-    environment:
-      - DATA_DIR=/app/data
-      - MEDIA_ROOT=/app/media
-      - STATIC_ROOT=/app/staticfiles
+      dockerfile: clownix/Dockerfile                                                                                                                                                          
+    image: clownix-web:latest                                                                                                                                                                 
+    container_name: clownix                                                                                                                                                                   
+    restart: unless-stopped                                                                                                                                                                   
+    env_file:                                                                                                                                                                                 
+      - .env                                                                                                                                                                                  
+    environment:                                                                                                                                                                              
+      - DATA_DIR=/app/data                                                                                                                                                                    
+      - MEDIA_ROOT=/app/media                                                                                                                                                                 
+      - STATIC_ROOT=/app/staticfiles                                                                                                                                                          
     volumes:
       - sqlite_data:/app/data
       - media_data:/app/media
