@@ -14,7 +14,10 @@ DATA_DIR = Path(os.getenv("DATA_DIR", str(BASE_DIR)))
 
 SECRET_KEY = os.getenv("SECRET_KEY")
 DEBUG = os.getenv("DEBUG", "1") == "1"
+
 ALLOWED_HOSTS = [h.strip() for h in os.getenv("ALLOWED_HOSTS", "").split(",") if h.strip()]
+CSRF_TRUSTED_ORIGINS = os.getenv('CSRF_TRUSTED_ORIGINS', '').split(',')
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',
