@@ -1,7 +1,24 @@
+from django import forms
 from django.contrib import admin
 from django.utils.html import format_html
 
+from django_ckeditor_5.widgets import CKEditor5Widget
+
 from .models import Category, Post, PostImage, Command
+
+
+class PostAdminForm(forms.ModelForm):
+    """Форма статьи с WYSIWYG-редактором CKEditor 5 для поля «Текст статьи»."""
+
+    class Meta:
+        model = Post
+        fields = "__all__"
+
+    body = forms.CharField(
+        label="Текст статьи",
+        required=False,
+        widget=CKEditor5Widget(config_name="default"),
+    )
 
 
 class PostImageInline(admin.TabularInline):
@@ -64,6 +81,7 @@ class PostAdmin(admin.ModelAdmin):
     readonly_fields = ("cover_preview", "created_at", "updated_at")
     list_editable = ("status",)
     inlines = [CommandInline, PostImageInline]
+    form = PostAdminForm
     date_hierarchy = "created_at"
     save_on_top = True
 
