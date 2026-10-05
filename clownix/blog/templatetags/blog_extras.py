@@ -23,20 +23,32 @@ def command_blocks(value: str) -> str:
 
 
 _IMG_RE = re.compile(r"\[\[img:(\d+)\]\]")
+_IMG_PARAGRAPH_RE = re.compile(
+    r"<p>\s*\[\[img:(\d+)\]\]\s*</p>", re.IGNORECASE
+)
+_HTML_TAG_RE = re.compile(r"<(?:p|h[1-6]|ul|ol|li|figure|img|a|blockquote|div|table|pre)\b", re.IGNORECASE)
 
 
 @register.filter(name="inline_images")
 def inline_images(value: str) -> str:
-    """Заменить плейсхолдеры [[img:ID]] на <figure> и сверстать абзацы."""
+    """Заменить плейсхолдеры [[img:ID]] на <figure> и сверстать абзацы.
+
+    Тело статьи может быть двух видов:
+    - HTML из WYSIWYG-редактора (CKEditor) — отдаётся как есть;
+    - старый простой текст — оборачивается в абзацы <p> как раньше.
+    """
     if not value:
         return ""
 
-    ids = {int(m) for m in _IMG_RE.findall(value)}
+    ids = {
+        int(m)
+        for m in set(_IMG_RE.findall(value)) | set(_IMG_PARAGRAPH_RE.findall(value))
+    }
     images = {img.pk: img for img in PostImage.objects.filter(pk__in=ids)}
 
-    def repl(match):
-        """Подставить inline-картинку по её ID; вернуть пустую строку, если нет."""
-        img = images.get(int(match.group(1)))
+    def figure_html(image_id):
+        """HTML-блок <figure> для inline-картинки по её ID."""
+        img = images.get(int(image_id))
         if img is None:
             return ""
         caption = (
@@ -49,7 +61,17 @@ def inline_images(value: str) -> str:
             f"{caption}</figure>"
         )
 
-    rendered = _IMG_RE.sub(repl, value)
+    # Плейсхолдер, занявший целый абзац (CKEditor оборачивает его в <p>),
+    # заменяем вместе с абзацем, чтобы не получать <figure> внутри <p>.
+    rendered = _IMG_PARAGRAPH_RE.sub(
+        lambda m: figure_html(m.group(1)), value
+    )
+    # Оставшиеся плейсхолдеры заменяем на месте.
+    rendered = _IMG_RE.sub(lambda m: figure_html(m.group(1)), rendered)
+
+    if _HTML_TAG_RE.search(rendered):
+        # Контент уже HTML из редактора — отдаём без дополнительной обёртки.
+        return mark_safe(rendered)
 
     paragraphs = []
     for paragraph in rendered.split("\n\n"):

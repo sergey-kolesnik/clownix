@@ -16,7 +16,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 DEBUG = os.getenv("DEBUG", "1") == "1"
 
 ALLOWED_HOSTS = [h.strip() for h in os.getenv("ALLOWED_HOSTS", "").split(",") if h.strip()]
-CSRF_TRUSTED_ORIGINS = os.getenv('CSRF_TRUSTED_ORIGINS', '').split(',')
+CSRF_TRUSTED_ORIGINS = [o for o in os.getenv('CSRF_TRUSTED_ORIGINS', '').split(',') if o.strip()]
 
 
 INSTALLED_APPS = [
@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sitemaps',
     "blog.apps.BlogConfig",
+    'django_ckeditor_5',
 ]
 
 MIDDLEWARE = [
@@ -84,5 +85,40 @@ STATIC_ROOT = Path(os.getenv("STATIC_ROOT", str(BASE_DIR / 'staticfiles')))
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = Path(os.getenv("MEDIA_ROOT", str(BASE_DIR / 'media')))
+
+# Конфигурация CKEditor 5 (WYSIWYG-редактор в админке).
+# Картинки, загруженные через кнопку редактора, сохраняются
+# в MEDIA_ROOT через стандартный storage Django.
+CKEDITOR_5_CONFIGS = {
+    'default': {
+        'language': 'ru',
+        'toolbar': [
+            'heading', 'fontSize', '|',  # Заголовки H1/H2/H3 и размер шрифта
+            'bold', 'italic', 'underline', 'strikethrough', '|',
+            'link', 'unlink', '|',  # Ссылка на выделенное слово
+            'bulletedList', 'numberedList', 'blockQuote', '|',
+            'uploadImage', 'insertTable', 'horizontalLine', '|',
+            'sourceEditing', 'undo', 'redo',
+        ],
+        'heading': {
+            'options': [
+                {'model': 'paragraph', 'title': 'Абзац', 'class': 'ck-heading_paragraph'},
+                {'model': 'heading1', 'view': 'h1', 'title': 'Заголовок 1', 'class': 'ck-heading_heading1'},
+                {'model': 'heading2', 'view': 'h2', 'title': 'Заголовок 2', 'class': 'ck-heading_heading2'},
+                {'model': 'heading3', 'view': 'h3', 'title': 'Заголовок 3', 'class': 'ck-heading_heading3'},
+            ],
+        },
+        'fontSize': {
+            'options': [10, 12, 14, 'default', 16, 18, 20, 24, 30],
+            'supportAllValues': True,
+        },
+        'image': {
+            'toolbar': ['imageTextAlternative', '|', 'imageStyle:inline', 'imageStyle:block', 'imageStyle:side'],
+        },
+        'table': {
+            'contentToolbar': ['tableColumn', 'tableRow', 'mergeTableCells'],
+        },
+    },
+}
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
